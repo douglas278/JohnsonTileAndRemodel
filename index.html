@@ -274,6 +274,16 @@
             margin-top: 20px;
         }
 
+        /* Explicit Horizontal Row Containers for Multi-Row Balanced Injections like Project 2 */
+        .project-media-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 24px;
+            align-items: center; /* Ensures before and after panels line up vertically down their midlines */
+            width: 100%;
+            margin-bottom: 24px;
+        }
+
         /* Legacy fallback placeholder template */
         .photo-card {
             background-color: var(--pure-white);
@@ -308,7 +318,7 @@
             box-shadow: 0 6px 18px rgba(0,0,0,0.1);
         }
 
-        /* Portrait-specific frame wrapper to allow full uncropped height visibility */
+        /* Portrait-specific frame wrapper scaled to structurally prevent overflow & track matching after views */
         .portrait-card-wrapper {
             background-color: var(--pure-white);
             border: 1px solid var(--border-light);
@@ -318,6 +328,10 @@
             border-bottom: 3px solid var(--border-light);
             transition: transform 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
             width: 100%;
+            max-height: 480px; /* Restricts vertical growth to visually align height scale perfectly with adjacent components */
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
 
         .portrait-card-wrapper:hover {
@@ -329,14 +343,15 @@
         .project-photo {
             width: 100%;
             height: 100%;
-            object-fit: cover; /* Micro-crops portfolio variables into their containers */
+            object-fit: cover; /* Micro-crops variables into standard containers */
             display: block;
         }
 
-        /* Let portrait images flow naturally down to show their full layout height context */
+        /* Scales tall portrait images cleanly inside the max-height card envelope boundary */
         .portrait-card-wrapper .project-photo {
             object-fit: contain;
-            height: auto;
+            max-height: 480px;
+            width: auto;
         }
 
         /* Custom "See More Pictures" Action Button Container and Link Style */
@@ -345,7 +360,7 @@
             justify-content: center;
             align-items: center;
             width: 100%;
-            margin-top: 12px;
+            margin-top: 16px;
         }
 
         .btn-see-more {
@@ -461,6 +476,11 @@
                 grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
                 gap: 16px;
             }
+            .project-media-row {
+                grid-template-columns: 1fr;
+                gap: 16px;
+                margin-bottom: 16px;
+            }
             .photo-card-column {
                 width: 100% !important;
             }
@@ -469,15 +489,12 @@
 </head>
 <body>
 
-    <!-- Top Corner Diagonal Split-Line Under Construction Ribbon Indicator -->
     <div class="construction-ribbon">
         Web Page Under Construction<br>Please check back later<br>for actual work items and project photos!
     </div>
 
-    <!-- Header & Navigation Assembly -->
     <header>
         <div class="header-container">
-            <!-- LOGO: References JTR-LOGO-cropped.jpg -->
             <a href="#" class="logo-wrapper">
                 <img src="JTR-LOGO-cropped.jpg" alt="Johnson Tile and Remodel LLC" class="logo-img">
             </a>
@@ -494,16 +511,14 @@
         </div>
     </header>
 
-    <!-- Main Accordion Module Component Area -->
     <main class="gallery-section">
         <div class="project-accordion" id="mainAccordion">
 
-            <!-- Loop Matrix Construction: Projects 1 Through 10 -->
             <script>
                 const totalProjects = 10;
                 let accordionHTML = '';
 
-                // Explicit custom name mappings for specific project indices[cite: 1]
+                // Explicit custom name mappings for specific project indices
                 const projectNames = {
                     1: "Bathroom Remodel #1 in Pine, Colorado",
                     2: "Bathroom Remodel #2 in Pine, Colorado",
@@ -533,17 +548,19 @@
                         `;
 
                         mediaGridHTML = `
-                            <div class="photo-card-column" style="display: flex; flex-direction: column; gap: 12px;">
-                                <div class="photo-card-wrapper">
-                                    <img src="project1-before.jpg" alt="${baseName} - Before Renovation" class="project-photo" loading="lazy">
+                            <div class="project-media-grid">
+                                <div class="photo-card-column" style="display: flex; flex-direction: column; gap: 12px;">
+                                    <div class="photo-card-wrapper">
+                                        <img src="project1-before.jpg" alt="${baseName} - Before Renovation" class="project-photo" loading="lazy">
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="photo-card-column" style="display: flex; flex-direction: column; gap: 12px;">
-                                <div class="photo-card-wrapper">
-                                    <img src="project1-after.jpg" alt="${baseName} - Completed Custom Shower" class="project-photo" loading="lazy">
-                                </div>
-                                <div class="action-button-container">
-                                    <a href="#" class="btn-see-more">See More Pictures</a>
+                                <div class="photo-card-column" style="display: flex; flex-direction: column; gap: 12px;">
+                                    <div class="photo-card-wrapper">
+                                        <img src="project1-after.jpg" alt="${baseName} - Completed Custom Shower" class="project-photo" loading="lazy">
+                                    </div>
+                                    <div class="action-button-container">
+                                        <a href="#" class="btn-see-more">See More Pictures</a>
+                                    </div>
                                 </div>
                             </div>
                         `;
@@ -567,25 +584,29 @@
                             </div>
                         `;
 
-                        // Swapped out photo-card-wrapper for portrait-card-wrapper on Project 2's portrait orientation uploads
+                        // Utilizes sequential rows to ensure upper items lock horizontal alignment together, and lower items lock together cleanly
                         mediaGridHTML = `
-                            <div class="photo-card-column" style="display: flex; flex-direction: column; gap: 24px;">
-                                <div class="portrait-card-wrapper">
-                                    <img src="project2-before1.jpg" alt="${baseName} - Original Vanity Setup" class="project-photo" loading="lazy">
+                            <div class="project-media-container" style="width: 100%;">
+                                <div class="project-media-row">
+                                    <div class="portrait-card-wrapper">
+                                        <img src="project2-before1.jpg" alt="${baseName} - Original Vanity Setup" class="project-photo" loading="lazy">
+                                    </div>
+                                    <div class="portrait-card-wrapper">
+                                        <img src="project2-after1.jpg" alt="${baseName} - Completed Tile Tub & Glass Barrier" class="project-photo" loading="lazy">
+                                    </div>
                                 </div>
-                                <div class="portrait-card-wrapper">
-                                    <img src="project2-before2.jpg" alt="${baseName} - Original Tub Enclosure" class="project-photo" loading="lazy">
-                                </div>
-                            </div>
-                            <div class="photo-card-column" style="display: flex; flex-direction: column; gap: 24px;">
-                                <div class="portrait-card-wrapper">
-                                    <img src="project2-after1.jpg" alt="${baseName} - Completed Tile Tub & Glass Barrier" class="project-photo" loading="lazy">
-                                </div>
-                                <div class="portrait-card-wrapper">
-                                    <img src="project2-after2.jpg" alt="${baseName} - Completed Vessel Sink & Backsplash" class="project-photo" loading="lazy">
-                                </div>
-                                <div class="action-button-container">
-                                    <a href="#" class="btn-see-more">See More Pictures</a>
+                                <div class="project-media-row" style="margin-bottom: 0;">
+                                    <div class="portrait-card-wrapper">
+                                        <img src="project2-before2.jpg" alt="${baseName} - Original Tub Enclosure" class="project-photo" loading="lazy">
+                                    </div>
+                                    <div class="portrait-card-wrapper" style="position: relative; display: flex; flex-direction: column; justify-content: space-between; height: 100%;">
+                                        <div style="width: 100%; display: flex; justify-content: center; align-items: center; max-height: 420px; overflow: hidden;">
+                                            <img src="project2-after2.jpg" alt="${baseName} - Completed Vessel Sink & Backsplash" class="project-photo" style="max-height: 420px; width: auto;" loading="lazy">
+                                        </div>
+                                        <div class="action-button-container">
+                                            <a href="#" class="btn-see-more">See More Pictures</a>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         `;
@@ -630,11 +651,8 @@
                                     
                                     ${innerDescriptionHTML}
                                     
-                                    <div class="project-media-grid">
-                                        ${mediaGridHTML}
-                                    </div>
+                                    ${i === 1 || i === 2 ? mediaGridHTML : `<div class="project-media-grid">${mediaGridHTML}</div>`}
 
-                                    <!-- Dedicated Scope & Work Item Details Grid Area -->
                                     <div class="project-work-details">
                                         <h4 class="work-details-heading">Project Scope & Work Items</h4>
                                         <ul class="work-items-list">
@@ -653,7 +671,6 @@
         </div>
     </main>
 
-    <!-- Smooth Engine Scripting for Accordion Logic -->
     <script>
         document.addEventListener('DOMContentLoaded', () => {
             const headers = document.querySelectorAll('.project-header');
