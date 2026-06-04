@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Johnson Tile and Remodel LLC | Premium Craftsmanship</title>
+    <style>
+        /* CSS Reset & Root Variables */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', BlinkMacSystemFont, Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+        }
+
+        :root {
+            /* Color Palette pulled directly from the logo artwork */
+            --primary-navy: #19325c;       /* Deep navy blue border & lettering */
+            --accent-teal: #2b706c;        /* Rich slate-teal tone from the mosaic */
+            --accent-earth: #7a532e;       /* Warm earth brown from the trowel handle */
+            --bg-light: #f4f6f9;           /* Soft clean background tint */
+            --text-dark: #222c3c;          /* Deep tone for high contrast text */
+            --text-muted: #51627e;         
+            --pure-white: #ffffff;
+            --border-light: #edf0f5;
+        }
+
+        body {
+            /* Smooth backdrop photo with a protective overlay to keep project text lines perfectly legible */
+            background: linear-gradient(rgba(230, 235, 242, 0.78), rgba(230, 235, 242, 0.78)),
+                        url('20260102_105038-JA-upper.jpg') no-repeat center center fixed;
+            background-size: cover;
+            color: var(--text-dark);
+            line-height: 1.6;
+            font-size: 16px;
+            min-height: 100vh;
+            overflow-x: hidden; /* Prevents ribbon from causing horizontal layout scrolling */
+        }
+
+        /* Adjusted Diagonal Corner Ribbon - Text Reduced 25% & Shifted to clear Gallery text */
+        .construction-ribbon {
+            position: fixed;
+            top: 135px; /* Re-centered coordinate to align cleanly across the upper far-right shoulder */
+            right: -170px; 
+            background-color: #e1b223; /* High-visibility construction mustard yellow */
+            color: #000000; /* Solid black text */
+            text-align: center;
+            font-weight: 800;
+            font-size: 1.25rem; /* Reduced text size by 25% */
+            line-height: 1.35; 
+            letter-spacing: 0.5px;
+            padding: 14px 220px; /* Streamlined padding to sit comfortably over the top corner */
+            transform: rotate(45deg);
+            transform-origin: center;
+            z-index: 9999; /* Keeps ribbon pinned clearly above headers and menus */
+            box-shadow: 0 4px 18px rgba(0,0,0,0.4);
+            border-top: 2px solid #000000;
+            border-bottom: 2px solid #000000;
+            text-transform: uppercase;
+            pointer-events: none; /* Allows underlying elements to remain fully clickable */
+            white-space: nowrap;
+        }
+
+        /* Main Navigation & Header Setup - Background Tint Removed */
+        header {
+            background-color: transparent; 
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            border-bottom: 3px solid var(--accent-teal); 
+        }
+
+        .header-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: flex-start;
+            align-items: center;
+            padding: 10px 24px; 
+            position: relative;
+        }
+
+        .logo-wrapper {
+            display: block;
+            height: 220px; 
+            width: auto;
+            transition: transform 0.2s ease;
+            flex-shrink: 0;
+            filter: drop-shadow(0 4px 12px rgba(0,0,0,0.25)); 
+        }
+
+        .logo-wrapper:hover {
+            transform: scale(1.02);
+        }
+
+        .logo-img {
+            height: 100%;
+            width: auto;
+            display: block;
+        }
+
+        .gallery-nav-container {
+            text-align: left;
+            margin-left: 80px;
+            flex-grow: 1;
+        }
+
+        .gallery-nav-text {
+            display: inline-block;
+            color: var(--primary-navy); /* Swapped to match your branding blue since white background is gone */
+            font-weight: 700;
+            font-size: 3.4rem;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            border-bottom: 8px solid var(--accent-earth);
+            padding-bottom: 0px; 
+            line-height: 1.0;    
+            text-shadow: 0 1px 2px rgba(255, 255, 255, 0.8); 
+        }
+
+        .header-right-nav {
+            position: absolute;
+            right: 24px;
+            top: 24px;
+            transform: none;
+            background: rgba(25, 50, 92, 0.1); 
+            padding: 6px 12px;
+            border-radius: 4px;
+            backdrop-filter: blur(4px);      
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            border: 1px solid rgba(25, 50, 92, 0.2);
+        }
+
+        .contact-email-link {
+            color: var(--primary-navy); /* Swapped for legibility against the light page body */
+            text-decoration: none;
+            font-weight: 600; 
+            font-size: 0.9rem;
+            letter-spacing: 0.3px;
+            padding: 2px 0;
+            border-bottom: 2px solid transparent;
+            transition: all 0.2s ease;
+        }
+
+        .contact-email-link:hover {
+            color: var(--accent-teal);
+            border-bottom: 2px solid var(--accent-teal);
+        }
+
+        /* Interactive Accordion Layout Section */
+        .gallery-section {
+            max-width: 1200px;
+            margin: 40px auto 80px auto;
+            padding: 0 24px;
+        }
+
+        .project-accordion {
+            background-color: transparent; 
+            border-radius: 6px;
+            overflow: hidden;
+        }
+
+        .project-item {
+            border-bottom: 1px solid rgba(25, 50, 92, 0.15);
+        }
+
+        .project-item:last-child {
+            border-bottom: none;
+        }
+
+        /* Header row - Modified to be a static display row during website construction */
+        .project-header {
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 24px 32px;
+            background: none;
+            border: none;
+            text-align: left;
+            outline: none;
+            cursor: default; /* Removed pointer finger feedback */
+        }
+
+        .project-title {
+            font-size: 1.4rem;
+            color: var(--primary-navy);
+            font-weight: 700;
+            letter-spacing: -0.3px;
+            text-shadow: 1px 1px 1px rgba(255, 255, 255, 0.6);
+        }
+
+        /* Content pane hidden strictly for setup phase */
+        .project-content-pane {
+            max-height: 0;
+            overflow: hidden;
+            background-color: var(--pure-white); 
+        }
+
+        /* Responsive Breakpoints */
+        @media (max-width: 950px) {
+            .construction-ribbon {
+                font-size: 0.85rem; /* Scaled down proportionally for clean mobile rendering */
+                padding: 10px 180px;
+                top: 135px;
+                right: -150px;
+            }
+            .header-container {
+                flex-direction: column;
+                gap: 16px;
+                padding: 24px 24px;
+                justify-content: center;
+            }
+            .logo-wrapper {
+                height: 140px; 
+            }
+            .gallery-nav-container {
+                margin-left: 0;
+                text-align: center;
+            }
+            .gallery-nav-text {
+                font-size: 2.4rem; 
+                border-bottom-width: 5px;
+            }
+            .header-right-nav {
+                position: static;
+                margin-top: 8px;
+                text-align: center;
+                display: inline-block;
+            }
+            .project-header {
+                padding: 20px 24px;
+            }
+            .project-title {
+                font-size: 1.2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Top Corner Diagonal Split-Line Under Construction Ribbon Indicator -->
+    <div class="construction-ribbon">
+        Web Page Under Construction<br>Please check back later<br>for actual work items and project photos!
+    </div>
+
+    <!-- Header & Navigation Assembly -->
+    <header>
+        <div class="header-container">
+            <!-- LOGO: References JTR-LOGO-cropped.jpg -->
+            <a href="#" class="logo-wrapper">
+                <img src="JTR-LOGO-cropped.jpg" alt="Johnson Tile and Remodel LLC" class="logo-img">
+            </a>
+            
+            <div class="gallery-nav-container">
+                <div class="gallery-nav-text">
+                    Project Gallery
+                </div>
+            </div>
+
+            <nav class="header-right-nav">
+                <a href="mailto:info@JohnsonTileAndRemodel.com?subject=Inquiry%20from%20Johnson%20Tile%20and%20Remodel%20web%20page" class="contact-email-link">info@JohnsonTileAndRemodel.com</a>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Main Accordion Module Component Area -->
+    <main class="gallery-section">
+        <div class="project-accordion">
+
+            <!-- Loop Matrix Construction: Projects 1 Through 10 -->
+            <script>
+                const totalProjects = 10;
+                let accordionHTML = '';
+
+                // Explicit custom name mappings for specific project indices
+                const projectNames = {
+                    1: "Bathroom Remodel #1 in Pine, Colorado",
+                    2: "Bathroom Remodel #2 in Pine, Colorado",
+                    3: "Equestrian Facility Bathroom and Wash Rack Upgrades",
+                    4: "Deck Repairs and New Decking in Pine, Colorado",
+                    5: "Deck Skirting and New Gate in Lakewood, Colorado",
+                    6: "Bathroom Vanity Install and Kitchen Shelves in Ken Caryl, Colorado",
+                    7: "Living Room Tile in Littleton, Colorado",
+                    8: "LVP flooring and Tile Foundation Wall in Littleton, Colorado (under construction)"
+                };
+
+                for (let i = 1; i <= totalProjects; i++) {
+                    // Pull mapping custom description if it exists; otherwise fall back to generic sequencing
+                    const baseName = projectNames[i] || `Project ${i}`;
+                    
+                    // Automatically prepends the reference number to the front of the display string
+                    const displayName = `${i}. ${baseName}`;
+
+                    accordionHTML += `
+                        <div class="project-item">
+                            <div class="project-header">
+                                <span class="project-title">${displayName}</span>
+                            </div>
+                        </div>
+                    `;
+                }
+                document.write(accordionHTML);
+            </script>
+
+        </div>
+    </main>
+
+</body>
+</html>
