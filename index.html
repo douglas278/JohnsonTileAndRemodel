@@ -308,11 +308,73 @@
             box-shadow: 0 6px 18px rgba(0,0,0,0.1);
         }
 
+        /* Portrait-specific frame wrapper to allow full uncropped height visibility */
+        .portrait-card-wrapper {
+            background-color: var(--pure-white);
+            border: 1px solid var(--border-light);
+            border-radius: 4px;
+            overflow: hidden;
+            box-shadow: 0 4px 14px rgba(0,0,0,0.06);
+            border-bottom: 3px solid var(--border-light);
+            transition: transform 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+            width: 100%;
+        }
+
+        .portrait-card-wrapper:hover {
+            transform: translateY(-3px);
+            border-bottom-color: var(--accent-teal);
+            box-shadow: 0 6px 18px rgba(0,0,0,0.1);
+        }
+
         .project-photo {
             width: 100%;
             height: 100%;
-            object-fit: cover; /* Micro-crops portrait/landscape variables cleanly into 4:3 grid containers */
+            object-fit: cover; /* Micro-crops portfolio variables into their containers */
             display: block;
+        }
+
+        /* Let portrait images flow naturally down to show their full layout height context */
+        .portrait-card-wrapper .project-photo {
+            object-fit: contain;
+            height: auto;
+        }
+
+        /* Custom "See More Pictures" Action Button Container and Link Style */
+        .action-button-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 100%;
+            margin-top: 12px;
+        }
+
+        .btn-see-more {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            background-color: var(--primary-navy);
+            color: var(--pure-white);
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 0.95rem;
+            letter-spacing: 0.5px;
+            padding: 10px 24px;
+            border-radius: 4px;
+            box-shadow: 0 4px 10px rgba(25, 50, 92, 0.2);
+            transition: background-color 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
+            text-transform: uppercase;
+            border: none;
+            cursor: pointer;
+        }
+
+        .btn-see-more:hover {
+            background-color: var(--accent-teal);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 14px rgba(43, 112, 108, 0.3);
+        }
+
+        .btn-see-more:active {
+            transform: translateY(0);
         }
 
         /* Project Scope Work List Styles */
@@ -399,6 +461,9 @@
                 grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
                 gap: 16px;
             }
+            .photo-card-column {
+                width: 100% !important;
+            }
         }
     </style>
 </head>
@@ -460,7 +525,6 @@
 
                     // --- TARGET SPECIFIC MEDIA AND DATA INJECTIONS FOR PROJECT 1 ---
                     if (i === 1) {
-                        // Styled heading to exactly match lower list areas
                         innerDescriptionHTML = `
                             <div class="project-description">
                                 <span class="project-goals-heading">Project Goals</span>
@@ -468,17 +532,22 @@
                             </div>
                         `;
 
-                        // Before picture set left, After picture set right
                         mediaGridHTML = `
-                            <div class="photo-card-wrapper">
-                                <img src="project1-before.jpg" alt="${baseName} - Before Renovation" class="project-photo" loading="lazy">
+                            <div class="photo-card-column" style="display: flex; flex-direction: column; gap: 12px;">
+                                <div class="photo-card-wrapper">
+                                    <img src="project1-before.jpg" alt="${baseName} - Before Renovation" class="project-photo" loading="lazy">
+                                </div>
                             </div>
-                            <div class="photo-card-wrapper">
-                                <img src="project1-after.jpg" alt="${baseName} - Completed Custom Shower" class="project-photo" loading="lazy">
+                            <div class="photo-card-column" style="display: flex; flex-direction: column; gap: 12px;">
+                                <div class="photo-card-wrapper">
+                                    <img src="project1-after.jpg" alt="${baseName} - Completed Custom Shower" class="project-photo" loading="lazy">
+                                </div>
+                                <div class="action-button-container">
+                                    <a href="#" class="btn-see-more">See More Pictures</a>
+                                </div>
                             </div>
                         `;
 
-                        // Bullet point breakdown situated clearly below images
                         workItemsHTML = `
                             <li>Complete demolition and removal of existing dated fiberglass tub insert and surround.</li>
                             <li>Full structural framing preparation and advanced waterproof shower pan system installation for walk-in conversion.</li>
@@ -489,6 +558,48 @@
                             <li>Installation of premium frameless glass enclosure featuring matte black hardware and a vertical pull bar handle (by others).</li>
                         `;
                     } 
+                    // --- TARGET SPECIFIC MEDIA AND DATA INJECTIONS FOR PROJECT 2 ---
+                    else if (i === 2) {
+                        innerDescriptionHTML = `
+                            <div class="project-description">
+                                <span class="project-goals-heading">Project Goals</span>
+                                <span class="project-goals-text">Demolish existing dated tub surround and low-profile vanity layout. Install a modern clean layout utilizing horizontal multi-toned gray glass mosaic subway tile, an elegant frameless clear-glass protective splash guard, premium matte black plumbing fixtures, and a contemporary top-mount ceramic vessel sink with modern tile backsplash accents.</span>
+                            </div>
+                        `;
+
+                        // Swapped out photo-card-wrapper for portrait-card-wrapper on Project 2's portrait orientation uploads
+                        mediaGridHTML = `
+                            <div class="photo-card-column" style="display: flex; flex-direction: column; gap: 24px;">
+                                <div class="portrait-card-wrapper">
+                                    <img src="project2-before1.jpg" alt="${baseName} - Original Vanity Setup" class="project-photo" loading="lazy">
+                                </div>
+                                <div class="portrait-card-wrapper">
+                                    <img src="project2-before2.jpg" alt="${baseName} - Original Tub Enclosure" class="project-photo" loading="lazy">
+                                </div>
+                            </div>
+                            <div class="photo-card-column" style="display: flex; flex-direction: column; gap: 24px;">
+                                <div class="portrait-card-wrapper">
+                                    <img src="project2-after1.jpg" alt="${baseName} - Completed Tile Tub & Glass Barrier" class="project-photo" loading="lazy">
+                                </div>
+                                <div class="portrait-card-wrapper">
+                                    <img src="project2-after2.jpg" alt="${baseName} - Completed Vessel Sink & Backsplash" class="project-photo" loading="lazy">
+                                </div>
+                                <div class="action-button-container">
+                                    <a href="#" class="btn-see-more">See More Pictures</a>
+                                </div>
+                            </div>
+                        `;
+
+                        workItemsHTML = `
+                            <li>Complete tear-out and removal of outdated drop-in fiberglass tub assembly, low-profile sink basin, and original vanity deck components.</li>
+                            <li>Preparation of structural framing layers with premium water-resistant backer board substrates for maximum moisture control in wet zones.</li>
+                            <li>Precision installation of multi-toned horizontal glass mosaic wall tiles extending flawlessly to the ceiling line.</li>
+                            <li>Framing integration and custom finishing for a recessed wall niche storage system seamlessly wrapped inside the mosaic tile profile.</li>
+                            <li>Rough-in and trim configurations for a modern rainfall shower head setup, variable handheld shower spray wand, and matching matte black control trim handles.</li>
+                            <li>Installation of a sleek stationary frameless clear-glass protective layout wall acting as an elegant structural water guard.</li>
+                            <li>Countertop updates and installation of a clean white ceramic vessel sink basin with an elevated single-handle matte black faucet plumbing assembly.</li>
+                        `;
+                    }
                     // --- PLACEHOLDER CONFIGURATIONS FOR THE REST OF THE PORTFOLIO PROJECTS ---
                     else {
                         innerDescriptionHTML = `
