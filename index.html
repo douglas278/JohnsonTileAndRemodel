@@ -162,13 +162,17 @@
 
         .project-item {
             border-bottom: 1px solid rgba(25, 50, 92, 0.15);
+            background: rgba(255, 255, 255, 0.3);
+            margin-bottom: 6px;
+            border-radius: 4px;
+            transition: background-color 0.3s ease;
         }
 
-        .project-item:last-child {
-            border-bottom: none;
+        .project-item:hover {
+            background: rgba(255, 255, 255, 0.55);
         }
 
-        /* Header row - Modified to be a static display row during website construction */
+        /* Interactive Header Row with Pointer Feedback */
         .project-header {
             width: 100%;
             display: flex;
@@ -179,7 +183,8 @@
             border: none;
             text-align: left;
             outline: none;
-            cursor: default; /* Removed pointer finger feedback */
+            cursor: pointer;
+            user-select: none;
         }
 
         .project-title {
@@ -188,19 +193,151 @@
             font-weight: 700;
             letter-spacing: -0.3px;
             text-shadow: 1px 1px 1px rgba(255, 255, 255, 0.6);
+            padding-right: 20px;
         }
 
-        /* Content pane hidden strictly for setup phase */
+        /* Accordion Toggle Icon Indicator */
+        .toggle-icon {
+            flex-shrink: 0;
+            width: 24px;
+            height: 24px;
+            stroke: var(--primary-navy);
+            transition: transform 0.3s ease;
+        }
+
+        .toggle-icon .minus-line {
+            transition: transform 0.3s ease, opacity 0.2s ease;
+            transform-origin: center;
+        }
+
+        /* Active State Icon Modifications */
+        .project-item.active .toggle-icon {
+            transform: rotate(180deg);
+            stroke: var(--accent-teal);
+        }
+
+        .project-item.active .toggle-icon .minus-line {
+            transform: rotate(90deg);
+            opacity: 0; /* Melts the vertical line away into a pure minus symbol */
+        }
+
+        /* Dynamic Animated Expansion Pane */
         .project-content-pane {
             max-height: 0;
             overflow: hidden;
-            background-color: var(--pure-white); 
+            background-color: rgba(255, 255, 255, 0.92); 
+            transition: max-height 0.4s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.3s ease;
+            opacity: 0;
+            border-top: 0 solid rgba(25, 50, 92, 0.1);
+        }
+
+        .project-item.active .project-content-pane {
+            opacity: 1;
+            border-top-width: 1px;
+        }
+
+        .project-inner-body {
+            padding: 32px;
+        }
+
+        .project-description {
+            font-size: 1.05rem;
+            color: var(--text-dark);
+            margin-bottom: 24px;
+            max-width: 900px;
+        }
+
+        /* Flexible High-Performance Layout Grid for Media */
+        .project-media-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
+        }
+
+        /* Legacy placeholder look */
+        .photo-card {
+            background-color: var(--pure-white);
+            border: 1px solid var(--border-light);
+            border-radius: 4px;
+            aspect-ratio: 4 / 3;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--text-muted);
+            font-size: 0.9rem;
+            font-weight: 500;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.03);
+            border-bottom: 3px solid var(--border-light);
+        }
+
+        /* Modern housing container for real uploaded photos */
+        .photo-card-wrapper {
+            background-color: var(--pure-white);
+            border: 1px solid var(--border-light);
+            border-radius: 4px;
+            aspect-ratio: 4 / 3;
+            overflow: hidden; /* Clips image corners cleanly */
+            box-shadow: 0 4px 10px rgba(0,0,0,0.03);
+            border-bottom: 3px solid var(--border-light);
+            transition: transform 0.2s ease, border-color 0.2s ease;
+        }
+
+        .photo-card-wrapper:hover {
+            transform: translateY(-2px);
+            border-bottom-color: var(--accent-teal);
+        }
+
+        .project-photo {
+            width: 100%;
+            height: 100%;
+            object-fit: cover; /* Keeps imagery nicely proportioned within 4:3 grids */
+            display: block;
+        }
+
+        /* Project Scope Work List Styles */
+        .project-work-details {
+            margin-top: 32px;
+            padding-top: 24px;
+            border-top: 1px dashed rgba(25, 50, 92, 0.2);
+        }
+
+        .work-details-heading {
+            font-size: 1.1rem;
+            color: var(--primary-navy);
+            font-weight: 700;
+            margin-bottom: 12px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .work-items-list {
+            list-style: none; /* Removes default black circles */
+            padding-left: 4px;
+        }
+
+        .work-items-list li {
+            position: relative;
+            padding-left: 24px;
+            margin-bottom: 8px;
+            font-size: 1rem;
+            color: var(--text-dark);
+        }
+
+        /* Custom square teal bullet points tying into a tile/mosaic design pattern */
+        .work-items-list li::before {
+            content: "■"; 
+            position: absolute;
+            left: 0;
+            top: 0;
+            color: var(--accent-teal);
+            font-size: 0.85rem;
         }
 
         /* Responsive Breakpoints */
         @media (max-width: 950px) {
             .construction-ribbon {
-                font-size: 0.85rem; /* Scaled down proportionally for clean mobile rendering */
+                font-size: 0.85rem; 
                 padding: 10px 180px;
                 top: 135px;
                 right: -150px;
@@ -234,20 +371,20 @@
             .project-title {
                 font-size: 1.2rem;
             }
+            .project-inner-body {
+                padding: 20px;
+            }
         }
     </style>
 </head>
 <body>
 
-    <!-- Top Corner Diagonal Split-Line Under Construction Ribbon Indicator -->
     <div class="construction-ribbon">
         Web Page Under Construction<br>Please check back later<br>for actual work items and project photos!
     </div>
 
-    <!-- Header & Navigation Assembly -->
     <header>
         <div class="header-container">
-            <!-- LOGO: References JTR-LOGO-cropped.jpg -->
             <a href="#" class="logo-wrapper">
                 <img src="JTR-LOGO-cropped.jpg" alt="Johnson Tile and Remodel LLC" class="logo-img">
             </a>
@@ -264,11 +401,9 @@
         </div>
     </header>
 
-    <!-- Main Accordion Module Component Area -->
     <main class="gallery-section">
-        <div class="project-accordion">
+        <div class="project-accordion" id="mainAccordion">
 
-            <!-- Loop Matrix Construction: Projects 1 Through 10 -->
             <script>
                 const totalProjects = 10;
                 let accordionHTML = '';
@@ -285,17 +420,64 @@
                     8: "LVP flooring and Tile Foundation Wall in Littleton, Colorado (under construction)"
                 };
 
+                // Track photo quantities per folder. Setting to 0 for layout setup mode.
+                const imageCounts = {
+                    1: 0, 
+                    2: 0,
+                    3: 0,
+                    4: 0,
+                    5: 0,
+                    6: 0,
+                    7: 0,
+                    8: 0
+                };
+
                 for (let i = 1; i <= totalProjects; i++) {
-                    // Pull mapping custom description if it exists; otherwise fall back to generic sequencing
                     const baseName = projectNames[i] || `Project ${i}`;
-                    
-                    // Automatically prepends the reference number to the front of the display string
                     const displayName = `${i}. ${baseName}`;
+                    
+                    let mediaGridHTML = '';
+                    const photoCount = imageCounts[i] || 0;
+
+                    if (photoCount > 0) {
+                        for (let j = 1; j <= photoCount; j++) {
+                            mediaGridHTML += `
+                                <div class="photo-card-wrapper">
+                                    <img src="gallery/project${i}_${j}.jpg" alt="${baseName} - Photo ${j}" class="project-photo" loading="lazy">
+                                </div>
+                            `;
+                        }
+                    } else {
+                        mediaGridHTML = `<div class="photo-card" style="grid-column: 1 / -1;">Project photos coming soon!</div>`;
+                    }
 
                     accordionHTML += `
                         <div class="project-item">
-                            <div class="project-header">
+                            <button class="project-header" aria-expanded="false">
                                 <span class="project-title">${displayName}</span>
+                                <svg class="toggle-icon" viewBox="0 0 24 24" fill="none" stroke-width="3" stroke-linecap="round">
+                                    <line x1="5" y1="12" x2="19" y2="12"></line>
+                                    <line class="minus-line" x1="12" y1="5" x2="12" y2="19"></line>
+                                </svg>
+                            </button>
+                            <div class="project-content-pane">
+                                <div class="project-inner-body">
+                                    <p class="project-description">Premium quality craftsmanship. Take a look through our completed work stages and structural layout details.</p>
+                                    
+                                    <div class="project-media-grid">
+                                        ${mediaGridHTML}
+                                    </div>
+
+                                    <div class="project-work-details">
+                                        <h4 class="work-details-heading">Project Scope & Work Items</h4>
+                                        <ul class="work-items-list">
+                                            <li>Work item details and project specifications coming soon.</li>
+                                            <li>Material selection, layout configuration, and installation highlights.</li>
+                                            <li>Structural preparation and waterproofing details.</li>
+                                        </ul>
+                                    </div>
+
+                                </div>
                             </div>
                         </div>
                     `;
@@ -305,6 +487,41 @@
 
         </div>
     </main>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const headers = document.querySelectorAll('.project-header');
+
+            headers.forEach(header => {
+                header.addEventListener('click', function() {
+                    const item = this.parentElement;
+                    const pane = this.nextElementSibling;
+                    const isExpanded = item.classList.contains('active');
+
+                    // Close sibling folders to maintain a tidy view profile
+                    document.querySelectorAll('.project-item').forEach(otherItem => {
+                        if (otherItem !== item && otherItem.classList.contains('active')) {
+                            otherItem.classList.remove('active');
+                            otherItem.querySelector('.project-header').setAttribute('aria-expanded', 'false');
+                            otherItem.querySelector('.project-content-pane').style.maxHeight = null;
+                        }
+                    });
+
+                    // Toggle visibility states
+                    if (isExpanded) {
+                        item.classList.remove('active');
+                        this.setAttribute('aria-expanded', 'false');
+                        pane.style.maxHeight = null;
+                    } else {
+                        item.classList.add('active');
+                        this.setAttribute('aria-expanded', 'true');
+                        // Computes physical payload height to instruct CSS transition mechanics fluidly
+                        pane.style.maxHeight = pane.scrollHeight + "px";
+                    }
+                });
+            });
+        });
+    </script>
 
 </body>
 </html>
