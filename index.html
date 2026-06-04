@@ -61,13 +61,16 @@
             white-space: nowrap;
         }
 
-        /* Main Navigation & Header Setup - Background Tint Removed */
+        /* Main Navigation & Header Setup - Fixed Overlap Bug with Background Backdrop & Z-Index Layering Priority */
         header {
-            background-color: transparent; 
+            /* Blends cleanly with the main body image styling while creating an opaque visual blocker */
+            background: linear-gradient(rgba(230, 235, 242, 0.96), rgba(230, 235, 242, 0.96));
+            backdrop-filter: blur(8px); /* Optional elegant glass effect */
             position: sticky;
             top: 0;
-            z-index: 1000;
+            z-index: 1000; /* Forces header wrapper elements to remain layered over accordion components */
             border-bottom: 3px solid var(--accent-teal); 
+            box-shadow: 0 4px 20px rgba(25, 50, 92, 0.08); /* Adds a crisp shadow line separation while scrolling */
         }
 
         .header-container {
@@ -240,22 +243,38 @@
             padding: 32px;
         }
 
+        /* Project Description Style Configured to Match Sibling Detail Headings & Span Full Layout Width */
         .project-description {
-            font-size: 1.05rem;
-            color: var(--text-dark);
             margin-bottom: 24px;
-            max-width: 900px;
+            max-width: 100%; /* Expanded from 900px to sit flush with the 2-photo media grid width */
         }
 
-        /* Flexible High-Performance Layout Grid for Media */
+        .project-goals-heading {
+            font-size: 1.1rem;
+            color: var(--primary-navy);
+            font-weight: 700;
+            margin-bottom: 6px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            display: block;
+        }
+
+        .project-goals-text {
+            font-size: 1rem;
+            color: var(--text-dark);
+            display: block;
+        }
+
+        /* Flexible High-Performance Layout Grid for Media — 1.5x Size Boost Configuration */
         .project-media-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-            gap: 20px;
+            /* Column minimum size scaled 1.5x up from 280px to 430px for a prominent presentation profile */
+            grid-template-columns: repeat(auto-fill, minmax(430px, 1fr));
+            gap: 24px;
             margin-top: 20px;
         }
 
-        /* Legacy placeholder look */
+        /* Legacy fallback placeholder template */
         .photo-card {
             background-color: var(--pure-white);
             border: 1px solid var(--border-light);
@@ -271,27 +290,28 @@
             border-bottom: 3px solid var(--border-light);
         }
 
-        /* Modern housing container for real uploaded photos */
+        /* Modern frame wrapper housing live uploaded installation images */
         .photo-card-wrapper {
             background-color: var(--pure-white);
             border: 1px solid var(--border-light);
             border-radius: 4px;
             aspect-ratio: 4 / 3;
             overflow: hidden; /* Clips image corners cleanly */
-            box-shadow: 0 4px 10px rgba(0,0,0,0.03);
+            box-shadow: 0 4px 14px rgba(0,0,0,0.06);
             border-bottom: 3px solid var(--border-light);
-            transition: transform 0.2s ease, border-color 0.2s ease;
+            transition: transform 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
         }
 
         .photo-card-wrapper:hover {
-            transform: translateY(-2px);
+            transform: translateY(-3px);
             border-bottom-color: var(--accent-teal);
+            box-shadow: 0 6px 18px rgba(0,0,0,0.1);
         }
 
         .project-photo {
             width: 100%;
             height: 100%;
-            object-fit: cover; /* Keeps imagery nicely proportioned within 4:3 grids */
+            object-fit: cover; /* Micro-crops portrait/landscape variables cleanly into 4:3 grid containers */
             display: block;
         }
 
@@ -312,7 +332,7 @@
         }
 
         .work-items-list {
-            list-style: none; /* Removes default black circles */
+            list-style: none; /* Removes standard default bullet circles */
             padding-left: 4px;
         }
 
@@ -324,7 +344,7 @@
             color: var(--text-dark);
         }
 
-        /* Custom square teal bullet points tying into a tile/mosaic design pattern */
+        /* Custom mitered style bullet marker squares */
         .work-items-list li::before {
             content: "■"; 
             position: absolute;
@@ -374,17 +394,25 @@
             .project-inner-body {
                 padding: 20px;
             }
+            /* Fluidly adjusts grid parameters on smaller screen viewing sizes */
+            .project-media-grid {
+                grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+                gap: 16px;
+            }
         }
     </style>
 </head>
 <body>
 
+    <!-- Top Corner Diagonal Split-Line Under Construction Ribbon Indicator -->
     <div class="construction-ribbon">
         Web Page Under Construction<br>Please check back later<br>for actual work items and project photos!
     </div>
 
+    <!-- Header & Navigation Assembly -->
     <header>
         <div class="header-container">
+            <!-- LOGO: References JTR-LOGO-cropped.jpg -->
             <a href="#" class="logo-wrapper">
                 <img src="JTR-LOGO-cropped.jpg" alt="Johnson Tile and Remodel LLC" class="logo-img">
             </a>
@@ -401,14 +429,16 @@
         </div>
     </header>
 
+    <!-- Main Accordion Module Component Area -->
     <main class="gallery-section">
         <div class="project-accordion" id="mainAccordion">
 
+            <!-- Loop Matrix Construction: Projects 1 Through 10 -->
             <script>
                 const totalProjects = 10;
                 let accordionHTML = '';
 
-                // Explicit custom name mappings for specific project indices
+                // Explicit custom name mappings for specific project indices[cite: 1]
                 const projectNames = {
                     1: "Bathroom Remodel #1 in Pine, Colorado",
                     2: "Bathroom Remodel #2 in Pine, Colorado",
@@ -420,35 +450,59 @@
                     8: "LVP flooring and Tile Foundation Wall in Littleton, Colorado (under construction)"
                 };
 
-                // Track photo quantities per folder. Setting to 0 for layout setup mode.
-                const imageCounts = {
-                    1: 0, 
-                    2: 0,
-                    3: 0,
-                    4: 0,
-                    5: 0,
-                    6: 0,
-                    7: 0,
-                    8: 0
-                };
-
                 for (let i = 1; i <= totalProjects; i++) {
                     const baseName = projectNames[i] || `Project ${i}`;
                     const displayName = `${i}. ${baseName}`;
                     
                     let mediaGridHTML = '';
-                    const photoCount = imageCounts[i] || 0;
+                    let workItemsHTML = '';
+                    let innerDescriptionHTML = '';
 
-                    if (photoCount > 0) {
-                        for (let j = 1; j <= photoCount; j++) {
-                            mediaGridHTML += `
-                                <div class="photo-card-wrapper">
-                                    <img src="gallery/project${i}_${j}.jpg" alt="${baseName} - Photo ${j}" class="project-photo" loading="lazy">
-                                </div>
-                            `;
-                        }
-                    } else {
+                    // --- TARGET SPECIFIC MEDIA AND DATA INJECTIONS FOR PROJECT 1 ---
+                    if (i === 1) {
+                        // Styled heading to exactly match lower list areas
+                        innerDescriptionHTML = `
+                            <div class="project-description">
+                                <span class="project-goals-heading">Project Goals</span>
+                                <span class="project-goals-text">Demolish existing shower and construct new walk-in shower to fit Client's equestrian vision with wood effect tiles and pebble floor.</span>
+                            </div>
+                        `;
+
+                        // Before picture set left, After picture set right
+                        mediaGridHTML = `
+                            <div class="photo-card-wrapper">
+                                <img src="project1-before.jpg" alt="${baseName} - Before Renovation" class="project-photo" loading="lazy">
+                            </div>
+                            <div class="photo-card-wrapper">
+                                <img src="project1-after.jpg" alt="${baseName} - Completed Custom Shower" class="project-photo" loading="lazy">
+                            </div>
+                        `;
+
+                        // Bullet point breakdown situated clearly below images
+                        workItemsHTML = `
+                            <li>Complete demolition and removal of existing dated fiberglass tub insert and surround.</li>
+                            <li>Full structural framing preparation and advanced waterproof shower pan system installation for walk-in conversion.</li>
+                            <li>Installation of premium wood-look porcelain wall plank tile, featuring a custom timber-frame style decorative layout with intersecting diagonal miter cuts.</li>
+                            <li>Install natural sliced pebble mosaic shower floor providing optimal drainage slope and enhanced underfoot comfort.</li>
+                            <li>Integration of a custom floating corner shower bench wrapped seamlessly in matching dark wood plank tiles.</li>
+                            <li>Metal corner-set shampoo niche and matching dark structural finishing trim profiles.</li>
+                            <li>Installation of premium frameless glass enclosure featuring matte black hardware and a vertical pull bar handle (by others).</li>
+                        `;
+                    } 
+                    // --- PLACEHOLDER CONFIGURATIONS FOR THE REST OF THE PORTFOLIO PROJECTS ---
+                    else {
+                        innerDescriptionHTML = `
+                            <div class="project-description">
+                                <span class="project-goals-heading">Project Goals</span>
+                                <span class="project-goals-text">Premium quality craftsmanship. Take a look through our completed work stages and structural layout details.</span>
+                            </div>
+                        `;
                         mediaGridHTML = `<div class="photo-card" style="grid-column: 1 / -1;">Project photos coming soon!</div>`;
+                        workItemsHTML = `
+                            <li>Work item details and project specifications coming soon.</li>
+                            <li>Material selection, layout configuration, and installation highlights.</li>
+                            <li>Structural preparation and waterproofing details.</li>
+                        `;
                     }
 
                     accordionHTML += `
@@ -462,18 +516,18 @@
                             </button>
                             <div class="project-content-pane">
                                 <div class="project-inner-body">
-                                    <p class="project-description">Premium quality craftsmanship. Take a look through our completed work stages and structural layout details.</p>
+                                    
+                                    ${innerDescriptionHTML}
                                     
                                     <div class="project-media-grid">
                                         ${mediaGridHTML}
                                     </div>
 
+                                    <!-- Dedicated Scope & Work Item Details Grid Area -->
                                     <div class="project-work-details">
                                         <h4 class="work-details-heading">Project Scope & Work Items</h4>
                                         <ul class="work-items-list">
-                                            <li>Work item details and project specifications coming soon.</li>
-                                            <li>Material selection, layout configuration, and installation highlights.</li>
-                                            <li>Structural preparation and waterproofing details.</li>
+                                            ${workItemsHTML}
                                         </ul>
                                     </div>
 
@@ -488,6 +542,7 @@
         </div>
     </main>
 
+    <!-- Smooth Engine Scripting for Accordion Logic -->
     <script>
         document.addEventListener('DOMContentLoaded', () => {
             const headers = document.querySelectorAll('.project-header');
@@ -498,7 +553,7 @@
                     const pane = this.nextElementSibling;
                     const isExpanded = item.classList.contains('active');
 
-                    // Close sibling folders to maintain a tidy view profile
+                    // Close sibling folders to maintain a clean vertical page presence
                     document.querySelectorAll('.project-item').forEach(otherItem => {
                         if (otherItem !== item && otherItem.classList.contains('active')) {
                             otherItem.classList.remove('active');
@@ -515,7 +570,7 @@
                     } else {
                         item.classList.add('active');
                         this.setAttribute('aria-expanded', 'true');
-                        // Computes physical payload height to instruct CSS transition mechanics fluidly
+                        // Computes physical content height to run fluid hardware-accelerated transitions
                         pane.style.maxHeight = pane.scrollHeight + "px";
                     }
                 });
